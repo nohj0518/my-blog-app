@@ -1,9 +1,15 @@
-import PostsPage from "../posts";
+import Carousel from "components/Carousel";
+import Footer from "components/Footer";
+import Header from "components/Header";
+import PostList from "components/PostList";
 
 export default function Home() {
   return (
     <div>
-      <PostsPage />
+      <Header />
+      <Carousel />
+      <PostList />
+      <Footer />
     </div>
   );
 }
