@@ -24,7 +24,11 @@ export default function PostForm() {
           title: title,
           summary: summary,
           content: content,
-          updateAt: new Date()?.toLocaleDateString(), // NoSQL 이라서 동적으로 필드 넣기 가능
+          updateAt: new Date()?.toLocaleDateString("ko", {
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+          }), // NoSQL 이라서 동적으로 필드 넣기 가능
         });
         toast.success("게시글을 수정했습니다.");
         navigate(`/posts/${post.id}`);
@@ -34,7 +38,11 @@ export default function PostForm() {
           title: title,
           summary: summary,
           content: content,
-          createAt: new Date()?.toLocaleDateString(),
+          createdAt: new Date()?.toLocaleDateString("ko", {
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+          }),
           email: user?.email,
           uid: user?.uid,
         });
