@@ -17,6 +17,8 @@ export interface PostProps {
   summary: string;
   content: string;
   createAt: string;
+  updateAt: string;
+  uid: string;
 }
 
 export default function PostList({ hasNavigation = true }: PostListProps) {
