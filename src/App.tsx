@@ -1,10 +1,11 @@
 import Router from "./components/Router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { app } from "firebaseApp";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Loader from "components/Loader";
+import ThemeContext from "pages/context/ThemeContext";
 
 function App() {
   const auth = getAuth(app);
@@ -14,11 +15,12 @@ function App() {
    * 이를 해결하기 위해서 auth 체크하기 전에(=> initialization 하기 전에)는 loader 를 띄우도록 했다.
    * auth의 currentUser 가 있으면 authenticated 로 변경시킨다.
    *  */
-
   const [init, setInit] = useState<boolean>(false);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
     !!auth?.currentUser
   );
+
+  const context = useContext(ThemeContext);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -32,8 +34,14 @@ function App() {
   }, [auth]);
   return (
     <>
-      <ToastContainer />
-      {init ? <Router isAuthenticated={isAuthenticated}></Router> : <Loader />}
+      <div className={context.theme === "light" ? "white" : "dark"}>
+        <ToastContainer />
+        {init ? (
+          <Router isAuthenticated={isAuthenticated}></Router>
+        ) : (
+          <Loader />
+        )}
+      </div>
     </>
   );
 }
