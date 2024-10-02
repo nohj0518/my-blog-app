@@ -5,20 +5,12 @@ import { db } from "firebaseApp";
 import AuthContext from "pages/context/AuthContext";
 import { toast } from "react-toastify";
 
-const mockComments = [
-  {
-    id: 1,
-    email: "dddldldl@dldld.com",
-    content: "정말 멋진 글이었습니다.",
-    createdAt: "2024-10-02",
-  },
-];
-
 interface CommentsProps {
   post: PostProps;
+  getPost: (id: string) => {};
 }
 
-export default function Comments({ post }: CommentsProps) {
+export default function Comments({ post, getPost }: CommentsProps) {
   const [comment, setComment] = useState("");
   const { user } = useContext(AuthContext);
 
@@ -56,6 +48,7 @@ export default function Comments({ post }: CommentsProps) {
               second: "2-digit",
             }),
           });
+          await getPost(post.id);
         }
       }
       toast.success("댓글을 생성했습니다.");
@@ -87,16 +80,19 @@ export default function Comments({ post }: CommentsProps) {
           </div>
         </form>
         <div className="comments__list">
-          {mockComments.map((comment) => (
-            <div key={comment.id} className="comment__box">
-              <div className="comment__profile-box">
-                <div className="comment__email">{comment.email}</div>
-                <div className="comment__date">{comment.createdAt}</div>
-                <div className="comment__delete">삭제</div>
+          {post?.comments
+            ?.slice(0)
+            ?.reverse()
+            .map((comment) => (
+              <div key={comment.createdAt} className="comment__box">
+                <div className="comment__profile-box">
+                  <div className="comment__email">{comment.email}</div>
+                  <div className="comment__date">{comment.createdAt}</div>
+                  <div className="comment__delete">삭제</div>
+                </div>
+                <div className="comment__text">{comment.content}</div>
               </div>
-              <div className="comment__text">{comment.content}</div>
-            </div>
-          ))}
+            ))}
         </div>
       </div>
     </>
